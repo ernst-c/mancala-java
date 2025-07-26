@@ -1,12 +1,20 @@
 package mancala.domain;
 
+import static java.lang.Math.abs;
+/*
+todo:
+- gebruik niet harde connecties tussen pits, verwijs objecten door
+- geen loops in test, gebruik gamestate
+- UI meer scheiden van logica --> done
+- niet in abstract zetten, casten naar normalpit of kalahapit
+- player vanuit player constructen --> done
+- findkalahaPit(player) functie implementeren? --> done
+ */
 public abstract class Pit {
     Player owner;
     Pit neighbor;
     int pitNr;
     int seedCount;
-    String gameState;
-
 
     public Pit() {}
     public abstract Pit getNeighbor();
@@ -23,10 +31,10 @@ public abstract class Pit {
     public abstract void keepOneSeedMoveRest(int seeds);
 
     boolean checkEmptySide() {
-        if (this.getPitNr() <= 6) {
-            return this.findNeighborFromPitNr(0).checkIfAllPitsOneSideEmpty();
+        if (this.getPitNr() <= 7) {
+            return this.findNeighborFromPitNr(1).checkIfAllPitsOneSideEmpty();
         } else {
-            return this.findNeighborFromPitNr(7).checkIfAllPitsOneSideEmpty();
+            return this.findNeighborFromPitNr(8).checkIfAllPitsOneSideEmpty();
         }
     }
     private boolean checkIfAllPitsOneSideEmpty() {
@@ -48,7 +56,7 @@ public abstract class Pit {
         }
     }
     public boolean checkForWinner() {
-        return (this.findNeighborFromPitNr(0).checkEmptySide() || this.findNeighborFromPitNr(7).checkEmptySide());
+        return (this.findNeighborFromPitNr(1).checkEmptySide() || this.findNeighborFromPitNr(8).checkEmptySide());
     }
     private int getAmountOfStonesPerSide() {
         if (this instanceof NormalPit) {
@@ -57,16 +65,11 @@ public abstract class Pit {
             return getSeedCount();
         }
     }
-    public String returnWinner() {
-        if (findNeighborFromPitNr(0).getAmountOfStonesPerSide() > findNeighborFromPitNr(7).getAmountOfStonesPerSide()) {
-            return "PLAYER_1";
-        } else if (findNeighborFromPitNr(0).getAmountOfStonesPerSide() < findNeighborFromPitNr(7).getAmountOfStonesPerSide()) {
-            return "PLAYER_2";
-        } else if (!this.checkForWinner()) {
-            return "NO_ONE";
-        }
-        else {
-            return "DRAW";
+    public Player returnWinner() {
+        if (findNeighborFromPitNr(1).getAmountOfStonesPerSide() > findNeighborFromPitNr(8).getAmountOfStonesPerSide()) {
+            return findNeighborFromPitNr(1).getOwner();
+        } else {
+            return findNeighborFromPitNr(8).getOwner();
         }
     }
 }

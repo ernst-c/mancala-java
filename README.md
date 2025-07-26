@@ -4,3 +4,4 @@ This project was done to improve programming proficiency. The mvc branch consist
 This repository contains two branches: 
 - mainline --> OO implementation of mancala domain
 - mvc --> full stack implementation of mancala domain 
+   

@@ -9,7 +9,7 @@ public class KalahaPit extends Pit {
         seedCount = 0;
         owner = currentPlayer;
         this.pitNr = pitNr;
-        if (pitNr == 13) {
+        if (pitNr == 14) {
             neighbor = initialPit;
         } else {
             neighbor = new NormalPit(initialPit, owner.getOpposingPlayer(), this.pitNr + 1);

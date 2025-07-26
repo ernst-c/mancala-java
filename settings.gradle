@@ -6,4 +6,4 @@
  */
 
 rootProject.name = 'mancala'
-include('api', 'persistence', 'domain')
+include('api', 'domain')

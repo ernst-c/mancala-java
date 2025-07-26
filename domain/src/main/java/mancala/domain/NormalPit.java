@@ -6,15 +6,14 @@ public class NormalPit extends Pit {
         super();
         this.seedCount = 4;
         owner = new Player();
-        this.pitNr = 0;
+        this.pitNr = 1;
         this.neighbor = new NormalPit(this, owner, this.pitNr+1);
-        this.gameState = "";
     }
     public NormalPit(NormalPit initialPit, Player currentPlayer, int pitNr) {
         this.seedCount = 4;
         owner = currentPlayer;
         this.pitNr = pitNr;
-        if (this.pitNr == 5 || this.pitNr == 12) {
+        if (this.pitNr == 6 || this.pitNr == 13) {
             neighbor = new KalahaPit(initialPit, owner, this.pitNr + 1);
         } else {
             neighbor = new NormalPit(initialPit, owner, this.pitNr + 1);
@@ -39,25 +38,14 @@ public class NormalPit extends Pit {
         this.removeSeeds(seeds);
         this.neighbor.keepOneSeedMoveRest(seeds);
         this.owner.changeTurnBothPlayers();
-        this.addMoveToGameState();
     }
-    public void addMoveToGameState() {
-        findNeighborFromPitNr(0).gameState += this.getPitNr()+"_";
-    }
-    public String returnGameState() {
-        return ((NormalPit) this.findNeighborFromPitNr(0)).getGameState();
-    }
-    public String getGameState() {
-        return this.gameState;
-    }
-
     public NormalPit findOpponent() {
-        return (NormalPit) findNeighborFromPitNr(13-this.pitNr);
+        return (NormalPit) findNeighborFromPitNr(14-this.pitNr);
     }
     private boolean stealCondition() {
         return (getSeedCount() == 1);
     }
-    public void keepOneSeedMoveRest(int seeds) {
+    public void keepOneSeedMoveRest(int seeds){
         if (seeds > 1) {
             seedCount++;
             getNeighbor().keepOneSeedMoveRest(seeds-1);
@@ -76,22 +64,14 @@ public class NormalPit extends Pit {
         this.addSeeds(opponentSeeds);
     }
     public KalahaPit getPlayerKalaha(Player owner) {
-        if (this.findNeighborFromPitNr(6).getOwner() == owner) {
-            return (KalahaPit) this.findNeighborFromPitNr(6);
+        if (this.findNeighborFromPitNr(7).getOwner() == owner) {
+            return (KalahaPit) this.findNeighborFromPitNr(7);
         } else {
-            return (KalahaPit) this.findNeighborFromPitNr(13);
+            return (KalahaPit) this.findNeighborFromPitNr(14);
         }
     }
     public void transferToKalaha(int seeds) {
             removeSeeds(seeds);
             this.getPlayerKalaha(this.getOwner()).addSeeds(seeds);
-    }
-    public void playGameState(String gamestate) {
-        String[] split = gamestate.split("_");
-        for (int i = 2; i < split.length; i++) {
-            if (!split[i].isEmpty()) {
-                ((NormalPit) this.findNeighborFromPitNr(Integer.parseInt(split[i]))).doMove();
-            }
-        }
     }
 }
